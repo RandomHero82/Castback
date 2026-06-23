@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { ArrowIcon, ExternalIcon, SearchIcon, SettingsIcon, StarIcon } from '../components/Icons'
+import { ArrowIcon, SearchIcon, SettingsIcon, StarIcon } from '../components/Icons'
 import { ErrorState, Spinner } from '../components/States'
 import { getToken, searchEverything } from '../lib/tmdb'
 import { creditYear, imageUrl } from '../lib/utils'
@@ -90,10 +90,9 @@ function PersonCard({ person }: { person: PersonSearchResult }) {
 function TitleCard({ title }: { title: TitleSearchResult }) {
   const img = imageUrl(title.poster_path)
   const label = title.title || title.name || 'Untitled'
-  const tmdbUrl = `https://www.themoviedb.org/${title.media_type}/${title.id}`
-  return <a href={tmdbUrl} target="_blank" rel="noreferrer" className="person-card group">
+  return <Link to={`/title/${title.media_type}/${title.id}`} className="person-card group">
     <div className="h-28 w-20 shrink-0 overflow-hidden rounded-lg bg-white/5">{img ? <img src={img} alt="" className="h-full w-full object-cover transition duration-500 group-hover:scale-105"/> : <div className="grid h-full place-items-center font-display text-3xl text-white/20">{label.charAt(0)}</div>}</div>
     <div className="min-w-0 flex-1"><div className="flex flex-wrap items-center gap-2"><span className={`media-badge static ${title.media_type}`}>{title.media_type === 'movie' ? 'Movie' : 'TV'}</span><span className="text-xs text-white/35">{creditYear(title)}</span>{title.vote_average > 0 && <span className="inline-flex items-center gap-1 text-xs text-white/45"><StarIcon className="h-3 w-3 text-gold"/>{title.vote_average.toFixed(1)}</span>}</div><h3 className="mt-2 truncate font-display text-xl font-semibold group-hover:text-gold">{label}</h3><p className="mt-2 line-clamp-2 text-sm leading-5 text-white/42">{title.overview || 'Open on TMDb for cast, crew, and details.'}</p></div>
-    <ExternalIcon className="h-5 w-5 self-center text-white/20 transition group-hover:translate-x-1 group-hover:text-gold"/>
-  </a>
+    <ArrowIcon className="h-5 w-5 self-center text-white/20 transition group-hover:translate-x-1 group-hover:text-gold"/>
+  </Link>
 }
