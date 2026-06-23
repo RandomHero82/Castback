@@ -10,8 +10,8 @@ type DatedMedia = {
 let imageBaseUrl = 'https://image.tmdb.org/t/p/'
 export const setImageBaseUrl = (base: string) => { imageBaseUrl = base.endsWith('/') ? base : `${base}/` }
 
-export const imageUrl = (path: string | null | undefined, size: 'profile' | 'poster' = 'poster') =>
-  path ? `${imageBaseUrl}${size === 'profile' ? 'h632' : 'w342'}${path}` : null
+export const imageUrl = (path: string | null | undefined, size: 'profile' | 'poster' | 'backdrop' = 'poster') =>
+  path ? `${imageBaseUrl}${size === 'profile' ? 'h632' : size === 'backdrop' ? 'w1280' : 'w342'}${path}` : null
 
 export const creditTitle = (credit: DatedMedia) => credit.title || credit.name || 'Untitled'
 export const creditDate = (credit: DatedMedia) => credit.release_date || credit.first_air_date || ''

@@ -1,4 +1,4 @@
-import type { CombinedCredits, ExternalIds, ImageConfig, MultiSearchResult, Person, SearchResponse } from '../types'
+import type { CombinedCredits, ExternalIds, ImageConfig, MultiSearchResult, Person, SearchResponse, TitleCredits, TitleDetail } from '../types'
 
 const TOKEN_KEY = 'castback_tmdb_token'
 const CACHE_PREFIX = 'castback_cache_v1:'
@@ -71,6 +71,14 @@ export const getPersonBundle = async (id: string) => {
     request<ExternalIds>(`/person/${id}/external_ids`),
   ])
   return { person, credits, externalIds }
+}
+
+export const getTitleBundle = async (mediaType: 'movie' | 'tv', id: string) => {
+  const [title, credits] = await Promise.all([
+    request<TitleDetail>(`/${mediaType}/${id}?language=en-US`),
+    request<TitleCredits>(`/${mediaType}/${id}/credits?language=en-US`),
+  ])
+  return { title: { ...title, media_type: mediaType }, credits }
 }
 
 export const getImageConfig = () => request<{ images: ImageConfig }>('/configuration', SEVEN_DAYS)
