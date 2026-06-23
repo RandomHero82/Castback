@@ -1,4 +1,4 @@
-import type { CombinedCredits, ExternalIds, ImageConfig, Person, SearchResponse } from '../types'
+import type { CombinedCredits, ExternalIds, ImageConfig, MultiSearchResult, Person, SearchResponse } from '../types'
 
 const TOKEN_KEY = 'castback_tmdb_token'
 const CACHE_PREFIX = 'castback_cache_v1:'
@@ -60,6 +60,9 @@ async function request<T>(path: string, ttl = SIX_HOURS): Promise<T> {
 
 export const searchPeople = (query: string, page = 1) =>
   request<SearchResponse>(`/search/person?query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=${page}`)
+
+export const searchEverything = (query: string, page = 1) =>
+  request<SearchResponse<MultiSearchResult>>(`/search/multi?query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=${page}`)
 
 export const getPersonBundle = async (id: string) => {
   const [person, credits, externalIds] = await Promise.all([
