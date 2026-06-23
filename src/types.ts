@@ -9,6 +9,7 @@ export interface KnownFor {
 
 export interface PersonSearchResult {
   id: number
+  media_type: 'person'
   name: string
   profile_path: string | null
   known_for_department: string
@@ -16,12 +17,29 @@ export interface PersonSearchResult {
   known_for: KnownFor[]
 }
 
-export interface SearchResponse {
+export interface SearchResponse<T = PersonSearchResult> {
   page: number
   total_pages: number
   total_results: number
-  results: PersonSearchResult[]
+  results: T[]
 }
+
+export interface TitleSearchResult {
+  id: number
+  media_type: 'movie' | 'tv'
+  title?: string
+  name?: string
+  overview: string
+  poster_path: string | null
+  backdrop_path: string | null
+  release_date?: string
+  first_air_date?: string
+  popularity: number
+  vote_average: number
+  vote_count: number
+}
+
+export type MultiSearchResult = PersonSearchResult | TitleSearchResult
 
 export interface Person {
   id: number
